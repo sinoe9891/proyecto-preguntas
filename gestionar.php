@@ -8,7 +8,18 @@
 </head>
 <body>
 	<div class="main">
-		<h1>Hola esto es un título</h1>
+		<h1>Proyecto Preguntas</h1>
+	</div>
+	<a href="index.php">
+		<p>Regresar</p>
+	</a>
+	<div class="container">
+		<a href="agregar.php">
+			<p>Ingresar Preguntas</p>
+		</a>
+		<a href="responder.php">
+			<p>Responder Preguntas</p>
+		</a>
 	</div>
 </body>
 </html>
