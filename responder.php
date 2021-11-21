@@ -32,12 +32,10 @@ include 'includes/conexion.php';
 			</tr>
 			<?php
 			if ($conn) {
-				$resp = $_GET['id'];
+
 				$preguntas_query = "SELECT * FROM preguntas";
-				$respoder_resp = "SELECT * FROM preguntas WHERE id = '$resp'";
+
 				$result = $conn->query($preguntas_query);
-				$resput = $conn->query($respoder_resp);
-				print_r($resp);
 				$numero = 0;
 				while ($question = $result->fetch_assoc()) {
 					$numero++;
@@ -45,7 +43,7 @@ include 'includes/conexion.php';
 					$respuesta = $question['respuesta'];
 					$estado = $question['estado'];
 					$id = $question['id'];
-					?>
+			?>
 					<tr>
 						<td>
 							<p><?php echo $numero; ?></p>
@@ -57,46 +55,52 @@ include 'includes/conexion.php';
 							<p><?php echo $respuesta; ?></p>
 						</td>
 						<td>
-							<p><?php echo $estado = 1 ? "Respondida" : "No Respondida"; ?></p>
+							<p><?php echo $estado = ($estado == 1) ? "Respondida" : "No Respondida"; ?></p>
 						</td>
 						<td>
 							<a href="responder.php?id=<?php echo $id ?>">
 								<p>Responder</p>
 							</a>
+							<a href="includes/eliminar.php?id=<?php echo $id ?>">
+								<p>Eliminar</p>
+							</a>
 						</td>
 					</tr>
-			<?php
+				<?php
 				}
-				$conn->close();
 			} else {
 				echo 'Conexión Fallida';
 			};
-
-			while ($answer = $resput->fetch_assoc()) {
-				$pregunt = $answer['preguntas'];
-				print_r($pregunt);
+			if (isset($_GET['id'])) {
+				$resp = $_GET['id'];
+				$respoder_resp = "SELECT * FROM preguntas WHERE id = '$resp'";
+				$resput = $conn->query($respoder_resp);
+				while ($answer = $resput->fetch_assoc()) {
+					$pregunt = $answer['preguntas'];
+					$respt = $answer['respuesta'];
 				?>
-
-			<div style="<?php echo $ver; ?>">
-				<h4>Responder Pregunta</h4>
-				<p>¿<?php echo $pregunt; ?></p>
-				<form action="">
-					<div>
-						<textarea name="contenido_respuesta" id="" cols="30" rows="3"></textarea>
+					<div style="<?php echo $ver; ?>">
+						<h4>Responder Pregunta</h4>
+						<p>¿<?php echo $pregunt; ?></p>
+						<form action="includes/responder.php?id=<?php echo $resp ?>" method="post">
+							<div>
+								<textarea name="contenido_respuesta" id="" cols="30" rows="3"><?php echo $respt ?></textarea>
+							</div>
+							<div>
+								<input type="submit" name="respondio" value="Guardar Respuesta">
+							</div>
+						</form>
 					</div>
-					<div>
-						<input type="submit" name="respondio" value="Guardar Respuesta">
-					</div>
-				</form>
-			</div>
-				<?php
-			}s
-			$ver = "display:none";
-			if ($resp) {
-				$ver = "display:initial";
+			<?php
+				}
+				$conn->close();
+				$ver = "display:none";
+				if ($resp) {
+					$ver = "display:initial";
+				};
 			};
 			?>
-			
+
 		</table>
 	</div>
 </body>

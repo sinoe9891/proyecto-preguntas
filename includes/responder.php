@@ -1,19 +1,17 @@
 <?php
-	$boton = $_POST['nueva_pregunta']; // Información de Botón
-	$nueva_pre = $_POST['new_question']; //Información del campo
+$id = $_GET['id']; // Información de Botón
+$respuesta = $_POST['contenido_respuesta']; //Información del campo
 
-	// if (isset($boton)) {
-	// 	//Conexión DB
-	// 	include 'conexion.php';
-	// 	//Declarando una variable con el Query
-	// 	$sqlquery = "INSERT INTO preguntas (preguntas, estado) VALUES ('$nueva_pre', 1)";
-	// 	// Enviar datos por medio de la conexión y enviar query
-	// 	// mysqli_query($conn, $sqlquery);
-	// 	if ($conn->query($sqlquery)===true) {
-	// 		header('Location: ../agregar.php?envio=1');
-	// 	}else{
-	// 		header('Location: ../agregar.php?envio=2');
-	// 		die($conn->error);
-	// 	}
-	// }
+if (isset($id)) {
+	include 'conexion.php';
+	$estado = ($respuesta == "") ? 0 : 1;
+	$sqlupdate = "UPDATE preguntas SET respuesta = '$respuesta', estado = $estado WHERE id = '$id'";
+
+	if ($conn->query($sqlupdate)) {
+		header('Location: ../responder.php?respoder=1');
+	} else {
+		header('Location: ../responder.php?respoder=0');
+		die("Error al actualizar" . $conn->error);
+	}
+}
 ?>
